@@ -35,4 +35,9 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getPreviousChoices() {
 		return this.repository.findAll(new Sort(Direction.DESC, "createdDate")); 
 	}
+	
+	@Override
+	public List<Product> getPreviousChoicesSortedByField(String field, Direction direction) {
+		return this.repository.findAll(new Sort(direction, field)); 
+	}
 }

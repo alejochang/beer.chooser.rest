@@ -1,5 +1,7 @@
 package beer.chooser.rest.controller;
 
+import groovy.util.OrderBy;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -8,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import beer.chooser.rest.BeerChooserApp;
 import beer.chooser.rest.BeerChooserProperties;
 import beer.chooser.rest.domain.Product;
 import beer.chooser.rest.domain.StoreInventory;
@@ -77,6 +79,13 @@ public class ProductController {
 		log.info("Getting historical choices");
 
 		return this.productService.getPreviousChoices();
+
+	}
+	
+	@RequestMapping(value = "get/sort/by/{field}/{direction}", method = RequestMethod.GET)
+	public List<Product> getPreviousChoicesSortedByField(@PathVariable("field") String field, @PathVariable("direction")  String direction) {
+		Direction dr = Direction.valueOf(direction.toUpperCase());
+		return this.productService.getPreviousChoicesSortedByField(field, dr);
 
 	}
 
